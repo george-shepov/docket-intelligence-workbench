@@ -4,8 +4,8 @@ import hashlib
 import json
 import re
 from collections import defaultdict
-from datetime import datetime, timezone
-from typing import Iterable
+from collections.abc import Iterable
+from datetime import UTC, datetime
 from uuid import UUID
 
 from docket_workbench.domain.models import (
@@ -67,7 +67,7 @@ def build_snapshot(
     entry_tuple = tuple(entries)
     return DocketSnapshot(
         case_id=case_id,
-        captured_at=captured_at or datetime.now(timezone.utc),
+        captured_at=captured_at or datetime.now(UTC),
         source_url=source_url,
         content_sha256=snapshot_hash(entry_tuple),
         entries=entry_tuple,
