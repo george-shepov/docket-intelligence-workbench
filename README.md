@@ -2,7 +2,28 @@
 
 **Monitor court cases, preserve historical docket snapshots, detect meaningful changes, organize filings, and analyze case records with source-grounded AI.**
 
-> Status: architecture and MVP foundation. The public repository is being built as a portfolio-grade, self-hostable workbench with a sanitized demonstration environment.
+> Status: public architecture and MVP foundation. The repository is being built as a portfolio-grade, self-hostable workbench with a sanitized demonstration environment.
+
+## What works now
+
+- FastAPI health, case, parser, and snapshot-comparison endpoints
+- Domain models for cases, docket entries, snapshots, and detected changes
+- Deterministic SHA-256 snapshot hashing
+- Added, removed, and modified entry detection
+- Parser-first Cuyahoga County Common Pleas adapter
+- Sanitized docket fixture and automated tests
+
+## Quick start
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -e ".[dev]"
+pytest
+uvicorn docket_workbench.api.main:app --reload
+```
+
+Open `http://localhost:8000/docs` for the interactive API.
 
 ## Why this exists
 
@@ -20,35 +41,11 @@ Docket Intelligence Workbench is designed to turn that repetitive work into a mo
 8. Ask questions and receive answers with citations to source documents.
 9. Deliver alerts when a meaningful event occurs.
 
-## Intended users
-
-- Law firms and legal operations teams
-- Litigation-support and compliance professionals
-- Journalists and public-record researchers
-- Self-represented litigants organizing their own records
-- Developers building court-data connectors and document workflows
-
 ## Product boundaries
 
 This project is **case-monitoring, document-analysis, compliance, and communication infrastructure**. It is not a law firm and does not provide legal representation.
 
 The platform may explain source records, surface inconsistencies, generate timelines, and help users organize information. It should not automatically file documents, make legal decisions, contact judges or probation officers on a user's behalf, or present inferred intent as established fact.
-
-## MVP
-
-The first complete vertical slice will support:
-
-- Case creation and watchlists
-- Per-case monitoring schedules
-- A Cuyahoga County Common Pleas source adapter
-- Immutable docket snapshots
-- Entry normalization and historical comparison
-- Meaningful-event detection
-- Filing download, hashing, and indexing
-- Timeline and change-history views
-- Email alerts and digests
-- Source-cited document questions and answers
-- Audit history for monitoring runs and analysis
 
 ## Architecture direction
 
@@ -68,23 +65,17 @@ Web application
         └── Notification services
 ```
 
-The public workbench will contain the reusable application, source-adapter contract, reference connector, tests, synthetic fixtures, and local deployment. Customer data, production credentials, private deployments, and customer-specific integrations remain outside this repository.
+The public workbench contains the reusable application, source-adapter contract, reference connector, tests, synthetic fixtures, and local deployment. Customer data, production credentials, private deployments, and customer-specific integrations remain outside this repository.
 
 ## Documentation
 
-- [Product vision](docs/PRODUCT_VISION.md)
-- [Current repository inventory](docs/CURRENT_REPOSITORY_INVENTORY.md)
-- [Target architecture](docs/TARGET_ARCHITECTURE.md)
-- [Domain model](docs/DOMAIN_MODEL.md)
-- [MVP backlog](docs/MVP_BACKLOG.md)
-- [Security and privacy](docs/SECURITY_AND_PRIVACY.md)
-- [Architecture decisions](docs/adr/)
+See [Foundation](docs/FOUNDATION.md) for the product vision, source-repository inventory, target architecture, domain model, security boundaries, and MVP backlog.
 
 ## Public demo principles
 
 The public demonstration will use synthetic, redacted, or clearly public records. It will not expose private case documents, customer information, production credentials, or personal legal strategy.
 
-Detected differences will be described neutrally—for example:
+Detected differences are described neutrally—for example:
 
 - Historical snapshot difference
 - Missing-entry candidate
@@ -93,28 +84,13 @@ Detected differences will be described neutrally—for example:
 
 The software can show that records differ. It should not claim that a difference proves intent.
 
-## Technology direction
-
-The initial implementation will reuse proven components from related private projects while establishing a clean public history:
-
-- FastAPI API and background services
-- PostgreSQL for durable application state
-- Redis-backed scheduling/worker execution when required
-- Next.js web application
-- Docker Compose for local evaluation
-- Playwright-based court connectors
-- Pluggable AI and embedding providers
-- Automated tests and fixture-based connector validation
-
 ## Roadmap
 
-1. Architecture and domain foundation
-2. Case and monitoring-run API
-3. Source-adapter contract and reference connector
-4. Immutable snapshots and docket comparison
-5. Documents, timeline, and cited Q&A
-6. Alerts, audit history, and hosted demonstration
-7. Private deployment and organization features
+1. Persist cases, monitoring runs, raw captures, and snapshots in PostgreSQL.
+2. Port authorized-case Playwright acquisition from the private Cuyahoga scraper.
+3. Add the Next.js case dashboard and historical comparison view.
+4. Ingest filings and provide source-cited search and Q&A.
+5. Add alerts, audit history, Docker deployment, and a public demo.
 
 ## Author
 
