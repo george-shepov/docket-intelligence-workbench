@@ -2,7 +2,6 @@ from fastapi.testclient import TestClient
 
 from docket_workbench.api.main import app, cases
 
-
 client = TestClient(app)
 
 
