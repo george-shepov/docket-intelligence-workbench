@@ -36,6 +36,11 @@ class CourtSourceAdapter(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def parse(self, raw_content: bytes, *, source_url: str | None = None) -> tuple[DocketEntry, ...]:
+    def parse(
+        self,
+        raw_content: bytes,
+        *,
+        source_url: str | None = None,
+    ) -> tuple[DocketEntry, ...]:
         """Parse an already captured source without network access."""
         raise NotImplementedError
