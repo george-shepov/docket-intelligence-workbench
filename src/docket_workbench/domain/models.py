@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from datetime import date, datetime, timezone
+from datetime import UTC, date, datetime
 from enum import StrEnum
 from typing import Annotated
 from uuid import UUID, uuid4
@@ -33,7 +33,7 @@ class CourtCase(BaseModel):
     source_key: Annotated[str, Field(min_length=1, max_length=100)]
     source_url: HttpUrl | None = None
     monitoring_frequency: MonitoringFrequency = MonitoringFrequency.DAILY
-    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    created_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
 
     @field_validator("case_number", "title", "court", "county", "source_key", mode="before")
     @classmethod
@@ -65,7 +65,7 @@ class DocketSnapshot(BaseModel):
 
     id: UUID = Field(default_factory=uuid4)
     case_id: UUID
-    captured_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    captured_at: datetime = Field(default_factory=lambda: datetime.now(UTC))
     source_url: HttpUrl | None = None
     content_sha256: Annotated[str, Field(pattern=r"^[a-f0-9]{64}$")]
     entries: tuple[DocketEntry, ...]
